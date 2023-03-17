@@ -1,39 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: amazonclone-deployment
+  labels:
+    app: webapp
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: webapp
+  template:
+    metadata:
+      labels:
+        app: webapp 
+    spec:
+      containers:
+      - name: webserver
+        image: kubehussain/amzclone:latest
+        ports:
+        - containerPort: 80
+        
+        
+---
+
 apiVersion: v1
 kind: Service
 metadata:
-  name: website
+  name: webapp-service
 spec:
-  type: NodePort
   selector:
-    app: website
+    app: webapp 
+  type: LoadBalancer
   ports:
   - protocol: TCP
     port: 80
     targetPort: 80
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: website
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: website
-  template:
-    metadata:
-      labels:
-        app: website
-    spec:
-      containers:
-      - name: website
-        image: kubehussain/amzclone
-        ports:
-        - containerPort: 80
-        volumeMounts:
-        - name: website-html
-          mountPath: /usr/share/nginx/html
-      volumes:
-      - name: website-html
-        configMap:
-          name: website-html
