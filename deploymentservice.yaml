@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: webserver
-        image: kubehussain/amzclone:latest
+        image: kubehussain/amzclone
         ports:
         - containerPort: 80
         
